@@ -1,0 +1,67 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <video autoplay></video>
+        <img width="640" height="480" src="" style="width:640px; height: 480px;">
+        <canvas width="640" height="480" style="display:none;"></canvas>
+        <script src="http://cdn.binaryjs.com/0/binary.js"></script>
+        <script>
+
+            var video = document.querySelector('video');
+            var canvas = document.querySelector('canvas');
+            var ctx = canvas.getContext('2d');
+            var localMediaStream = null;
+
+            function snapshot() {
+                if (localMediaStream) {
+                    ctx.drawImage(video, 0, 0);
+
+                    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    var pixels = imageData.data;
+                    var numPixels = imageData.width * imageData.height;
+                    for (var i = 0; i < numPixels; i++) {
+                        pixels[i*4] = 255-pixels[i*4]; // Red
+                        pixels[i*4+1] = 255-pixels[i*4+1]; // Green
+                        pixels[i*4+2] = 255-pixels[i*4+2]; // Blue
+                    };
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.putImageData(imageData, 0, 0);
+                    // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                    document.querySelector('img').src = canvas.toDataURL('image/webp');
+
+                }
+            }
+
+            //video.addEventListener('click', snapshot, false);
+            setInterval(snapshot, 0);
+
+            function hasGetUserMedia() {
+                return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia || navigator.msGetUserMedia);
+            }
+
+            function enableGetUserMedia() {
+                window.URL = window.URL || window.webkitURL;
+                navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia || navigator.msGetUserMedia;
+            }
+            var onFailSoHard = function(e) {
+                console.log('Reeeejected!', e);
+            };
+
+            if (hasGetUserMedia()) {
+                enableGetUserMedia()
+                navigator.getUserMedia({video: true}, function(stream) {
+                    video.src = window.URL.createObjectURL(stream);
+                    localMediaStream = stream;
+                }, onFailSoHard);
+
+            } else {
+                alert('getUserMedia() is not supported in your browser');
+            }
+
+
+        </script>
+    </body>
+</html>
