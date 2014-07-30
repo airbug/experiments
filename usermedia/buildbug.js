@@ -60,10 +60,10 @@ buildProperties({
         },
         sourcePaths: [
             "./js/src",
-            '../../bugcore/projects/bugcore/js/src',
+            '../../bugcore/libraries/bugcore/js/src',
             '../../bugfs/projects/bugfs/js/src',
+            '../../bugioc/libraries/bugioc/js/src',
             "../../bugjs/projects/bugapp/js/src",
-            '../../bugjs/projects/bugioc/js/src',
             '../../bugjs/projects/express/js/src',
             '../../bugmeta/projects/bugmeta/js/src'
         ],
@@ -76,16 +76,16 @@ buildProperties({
         unitTest: {
             sourcePaths: [
                 "../../buganno/projects/buganno/js/src",
-                "../../bugjs/projects/bugyarn/js/src",
                 "../../bugunit/projects/bugdouble/js/src",
-                '../../bugunit/projects/bugunit/js/src'
+                "../../bugunit/projects/bugunit/js/src",
+                "../../bugyarn/libraries/bugyarn/js/src"
             ],
             scriptPaths: [
                 "../../buganno/projects/buganno/js/scripts",
                 "../../bugunit/projects/bugunit/js/scripts"
             ],
             testPaths: [
-                "../../bugcore/projects/bugcore/js/test"
+                "../../bugcore/libraries/bugcore/js/test"
             ]
         }
     }
