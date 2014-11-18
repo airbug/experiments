@@ -1,0 +1,59 @@
+<html>
+<head>
+</head>
+<body>
+<img width="640" height="480" src="" style="width:640px; height: 480px;" id="view">
+<video autoplay style="position:absolute; width:160px; height:120px; left: 480px; top: 360px;"></video>
+<canvas width="640" height="480" style="display:none;"></canvas>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io('http://10.0.1.55');
+    socket.on('show', function (data) {
+        $("#view").attr("src", "data:image/jpeg;base64," + data.image);
+    });
+    var video = document.querySelector('video');
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext('2d');
+    var localMediaStream = null;
+
+    function snapshot() {
+        if (localMediaStream) {
+            ctx.drawImage(video, 0, 0);
+            var data = canvas.toDataURL('image/jpeg');
+            socket.emit("snapshot", {image: data});
+        }
+    }
+
+    //video.addEventListener('click', snapshot, false);
+    setInterval(snapshot, 150);
+
+    function hasGetUserMedia() {
+        return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+    }
+
+    function enableGetUserMedia() {
+        window.URL = window.URL || window.webkitURL;
+        navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    }
+    var onFailSoHard = function(e) {
+        console.log('Reeeejected!', e);
+    };
+
+    if (hasGetUserMedia()) {
+        enableGetUserMedia();
+        navigator.getUserMedia({video: true}, function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            localMediaStream = stream;
+        }, onFailSoHard);
+
+    } else {
+        alert('getUserMedia() is not supported in your browser');
+    }
+
+
+</script>
+</body>
+</html>

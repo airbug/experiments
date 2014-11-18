@@ -50,7 +50,7 @@ buildProperties({
             name: "usermedia",
             version: "0.0.1",
             dependencies: {
-                bugpack: "0.1.14",
+                bugpack: "0.2.0",
                 express: "3.2.x",
                 binaryjs: "0.2.x"
             },
@@ -60,12 +60,12 @@ buildProperties({
         },
         sourcePaths: [
             "./js/src",
+            "../../bugapp/libraries/bugapp/js/src",
             '../../bugcore/libraries/bugcore/js/src',
-            '../../bugfs/projects/bugfs/js/src',
+            '../../bugfs/libraries/bugfs/js/src',
             '../../bugioc/libraries/bugioc/js/src',
-            "../../bugjs/projects/bugapp/js/src",
             '../../bugjs/projects/express/js/src',
-            '../../bugmeta/projects/bugmeta/js/src'
+            '../../bugmeta/libraries/bugmeta/js/src'
         ],
         scriptPaths: [
             "./js/scripts"
