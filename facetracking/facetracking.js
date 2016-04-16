@@ -27,14 +27,16 @@ io.on('connection', function (socket) {
         var s = new cv.ImageDataStream();
         s.on('load', function(matrix) {
             if (matrix) {
-                matrix.detectObject(cv.FACE_CASCADE, {}, function (err, faces) {
+                console.log("matrix.height:", matrix.height()," matrix.width:", matrix.width());
+                console.log("matrix.get(0,0):", matrix.get(0,0));
+                /*matrix.detectObject(cv.FACE_CASCADE, {}, function (err, faces) {
                     for (var i = 0; i < faces.length; i++) {
                         var face = faces[i];
                         matrix.ellipse(face.x + face.width / 2, face.y + face.height / 2, face.width / 2, face.height / 2);
                     }
                     var base64 = matrix.toBuffer().toString("base64");
                     socket.emit('show', { image: base64 });
-                });
+                });*/
             }
         });
 
